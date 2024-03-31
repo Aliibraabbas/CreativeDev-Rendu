@@ -1,4 +1,4 @@
-import { GUI } from 'dat.gui';
+// import { GUI } from 'dat.gui';
 const canvas = document.getElementById('clockCanvas');
 const ctx = canvas.getContext('2d');
 const radius = canvas.width / 2;
@@ -6,7 +6,6 @@ const numLines = 60;
 const lineLength = radius * 0.8;
 const lineWidth = 2;
 let hue = 0;
-
 
 
 function drawClock() {
@@ -33,6 +32,24 @@ function drawClock() {
 
     const now = new Date();
 
+    // Draw rotating lines
+    hue = (hue + 1) % 360;
+    // ctx.lineWidth = params.lineWidth;
+    ctx.lineWidth = lineWidth;
+    for (let i = 0; i < numLines; i++) {
+      const angle = (now.getSeconds() + now.getMilliseconds() / 1000 + i / numLines) * 6 * (Math.PI / 180);
+      const x1 = radius + Math.cos(angle) * lineLength;
+      const y1 = radius + Math.sin(angle) * lineLength;
+      const x2 = radius + Math.cos(angle) * (lineLength - 2);
+      const y2 = radius + Math.sin(angle) * (lineLength - 2);
+    
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+      ctx.stroke();
+    }
+
     // Draw hour hand
     const hourAngle = ((now.getHours() % 12) - 3) * (Math.PI * 2) / 12 + ((Math.PI * 2) / 12) * (now.getMinutes() / 60);
     drawHand(hourAngle, radius * 0.5, 10, '#000');
@@ -45,23 +62,6 @@ function drawClock() {
     const secondAngle = (now.getSeconds() - 15) * (Math.PI * 2) / 60 + ((Math.PI * 2) / 60) * (now.getMilliseconds() / 1000);
     drawHand(secondAngle, radius * 0.9, 2, 'red');
 
-    // Draw rotating lines
-    hue = (hue + 1) % 360;
-    // ctx.lineWidth = params.lineWidth;
-    ctx.lineWidth = lineWidth;
-    for (let i = 0; i < numLines; i++) {
-        const angle = (now.getSeconds() + now.getMilliseconds() / 1000 + i / numLines) * 6 * (Math.PI / 180);
-        const x1 = radius + Math.cos(angle) * params.lineLength;
-        const y1 = radius + Math.sin(angle) * params.lineLength;
-        const x2 = radius + Math.cos(angle) * (params.lineLength - 2);
-        const y2 = radius + Math.sin(angle) * (params.lineLength - 2);
-
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = `hsl(${params.lineColor[0]}, ${params.lineColor[1]}%, ${params.lineColor[2]}%)`;
-        ctx.stroke();
-    }
 
     // Display current time
     const hours = now.getHours().toString().padStart(2, '0');
