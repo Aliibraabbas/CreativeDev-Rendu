@@ -47,7 +47,8 @@ function drawClock() {
 
     // Draw rotating lines
     hue = (hue + 1) % 360;
-    ctx.lineWidth = params.lineWidth;
+    // ctx.lineWidth = params.lineWidth;
+    ctx.lineWidth = lineWidth;
     for (let i = 0; i < numLines; i++) {
         const angle = (now.getSeconds() + now.getMilliseconds() / 1000 + i / numLines) * 6 * (Math.PI / 180);
         const x1 = radius + Math.cos(angle) * params.lineLength;
@@ -87,39 +88,39 @@ setInterval(drawClock, 1000 / 60);
 
 
 // Debug window setup
-const debug = new GUI();
-const params = {
-    lineLength: lineLength,
-    lineWidth: lineWidth,
-    clockSize: 400,
-    clockColor: '#ffffff',
-    hourAngle: 0,
-    minuteAngle: 0,
-    secondAngle: 0,
-    lineColor: [0, 100, 50],
-    randomizeColor: function() {
-        params.lineColor = [Math.random() * 360, 100, 50];
-        drawClock();
-    }
-};
-const debugFolder = debug.addFolder("Debug Settings");
+// const debug = new GUI();
+// const params = {
+//     lineLength: lineLength,
+//     lineWidth: lineWidth,
+//     clockSize: 400,
+//     clockColor: '#ffffff',
+//     hourAngle: 0,
+//     minuteAngle: 0,
+//     secondAngle: 0,
+//     lineColor: [0, 100, 50],
+//     randomizeColor: function() {
+//         params.lineColor = [Math.random() * 360, 100, 50];
+//         drawClock();
+//     }
+// };
+// const debugFolder = debug.addFolder("Debug Settings");
 
-debugFolder.add(params, "clockSize", 100, 800).onChange(() => {
-  canvas.width = params.clockSize;
-  canvas.height = params.clockSize;
-  radius = params.clockSize / 2;
-  drawClock();
-});
+// debugFolder.add(params, "clockSize", 100, 800).onChange(() => {
+//   canvas.width = params.clockSize;
+//   canvas.height = params.clockSize;
+//   radius = params.clockSize / 2;
+//   drawClock();
+// });
 
-debugFolder.addColor(params, "clockColor").onChange(() => {
-  document.body.style.backgroundColor = params.clockColor;
-  drawClock(); 
-});
-debugFolder.add(params, "lineLength", 0, radius * 0.8 * 2).onChange(() => drawClock()); 
-debugFolder.add(params, "lineWidth", 1, 10).onChange(() => drawClock()); 
-debugFolder.addColor(params, "lineColor").onChange(() => drawClock()); 
-debugFolder.add(params, "randomizeColor");
-debugFolder.add(params, "hourAngle", 0, Math.PI * 2).onChange(() => drawClock()); 
-debugFolder.add(params, "minuteAngle", 0, Math.PI * 2).onChange(() => drawClock()); 
-debugFolder.add(params, "secondAngle", 0, Math.PI * 2).onChange(() => drawClock()); 
+// debugFolder.addColor(params, "clockColor").onChange(() => {
+//   document.body.style.backgroundColor = params.clockColor;
+//   drawClock(); 
+// });
+// debugFolder.add(params, "lineLength", 0, radius * 0.8 * 2).onChange(() => drawClock()); 
+// debugFolder.add(params, "lineWidth", 1, 10).onChange(() => drawClock()); 
+// debugFolder.addColor(params, "lineColor").onChange(() => drawClock()); 
+// debugFolder.add(params, "randomizeColor");
+// debugFolder.add(params, "hourAngle", 0, Math.PI * 2).onChange(() => drawClock()); 
+// debugFolder.add(params, "minuteAngle", 0, Math.PI * 2).onChange(() => drawClock()); 
+// debugFolder.add(params, "secondAngle", 0, Math.PI * 2).onChange(() => drawClock()); 
 
